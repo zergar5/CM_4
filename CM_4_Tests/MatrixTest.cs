@@ -12,7 +12,6 @@ public class MatrixTest
     private List<Function> _linesSystem;
     private List<Function> _circlesSystem;
     private List<Function> _sinusoidSystem;
-    private DerivativeCalculator _derivativeCalculator;
 
     [SetUp]
     public void Setup()
@@ -41,7 +40,6 @@ public class MatrixTest
             new Sinusoid(0, 1, 2, 0),
             new Line(1, 1, -4),
         };
-        _derivativeCalculator = new DerivativeCalculator();
     }
 
     [Test]
@@ -62,7 +60,7 @@ public class MatrixTest
     public void AnalyticalJacobianLinesTest()
     {
         
-        _matrix.CalcJacobian(_linesSystem, _point);
+        _matrix.CalcJacobianAnalytically(_linesSystem, _point);
         var actual = new[,]
         {
             { 1.0, -10 },
@@ -76,7 +74,7 @@ public class MatrixTest
     public void AnalyticalJacobianCirclesTest()
     {
 
-        _matrix.CalcJacobian(_circlesSystem, _point);
+        _matrix.CalcJacobianAnalytically(_circlesSystem, _point);
         var actual = new[,]
         {
             { 0.0, -2.0 },
@@ -89,7 +87,7 @@ public class MatrixTest
     public void AnalyticalJacobianSinusoidTest()
     {
 
-        _matrix.CalcJacobian(_sinusoidSystem, _point);
+        _matrix.CalcJacobianAnalytically(_sinusoidSystem, _point);
         var actual = new[,]
         {
             { -0.83229367309428481, -1.0 },
@@ -102,7 +100,7 @@ public class MatrixTest
     public void NumericalJacobianLinesTest()
     {
         
-        _matrix.CalcJacobian(_linesSystem, _point, _derivativeCalculator);
+        _matrix.CalcJacobianNumerically(_linesSystem, _point);
         var actual = new[,]
         {
             { 0.99999999999944578, -9.9999999999988987 },
@@ -116,7 +114,7 @@ public class MatrixTest
     public void NumericalJacobianCirclesTest()
     {
 
-        _matrix.CalcJacobian(_circlesSystem, _point, _derivativeCalculator);
+        _matrix.CalcJacobianNumerically(_circlesSystem, _point);
         var actual = new[,]
         {
             { 0.0, -1.9999999999997797 },
@@ -129,7 +127,7 @@ public class MatrixTest
     public void NumericalJacobianSinusoidTest()
     {
 
-        _matrix.CalcJacobian(_sinusoidSystem, _point, _derivativeCalculator);
+        _matrix.CalcJacobianNumerically(_sinusoidSystem, _point);
         var actual = new[,]
         {
             { -0.83229311823190821, -0.99999999999994538 },

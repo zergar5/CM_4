@@ -7,7 +7,7 @@ public class Matrix
 {
     public double[,] A { get; set; }
 
-    public void CalcJacobian(List<Function> system, double[] point)
+    public void CalcJacobianAnalytically(List<Function> system, double[] point)
     {
         A = new double[system.Count, point.Length];
 
@@ -21,7 +21,7 @@ public class Matrix
         }
     }
 
-    public void CalcJacobian(List<Function> system, double[] point, DerivativeCalculator derivativeCalculator)
+    public void CalcJacobianNumerically(List<Function> system, double[] point)
     {
         A = new double[system.Count, point.Length];
 
@@ -29,7 +29,7 @@ public class Matrix
         {
             for (var j = 0; j < point.Length; j++)
             {
-                A[i, j] = derivativeCalculator.CalcDerivative(system[i], (char)('x' + j), point);
+                A[i, j] = DerivativeCalculator.CalcDerivative(system[i], (char)('x' + j), point);
             }
         }
     }

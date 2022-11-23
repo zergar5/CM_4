@@ -4,14 +4,14 @@ namespace CM_4.Tools.Calculators;
 
 public class DerivativeCalculator
 {
-    private double _delta = 0.001;
-    private Dictionary<char, int> _point = new()
+    private static double _delta = 0.001;
+    private static Dictionary<char, int> _point = new()
     {
         {'x', 0},
         {'y', 1}
     };
 
-    public double CalcDerivative(Function function, char variableChar, double[] point)
+    public static double CalcDerivative(Function function, char variableChar, double[] point)
     {
         var variable = point[_point[variableChar]];
 

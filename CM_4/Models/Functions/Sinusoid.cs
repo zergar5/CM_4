@@ -2,43 +2,43 @@
 
 public class Sinusoid : Function, IEquatable<Sinusoid>
 {
-    private double _shift;
-    private double _amplitude;
-    private double _frequency;
-    private double _negativeShift;
+    public double shift;
+    public double amplitude;
+    public double frequency;
+    public double negativeShift;
 
     public Sinusoid()
     {
-        _shift = 0.0;
-        _amplitude = 0.0;
-        _frequency = 0.0;
-        _negativeShift = 0.0;
+        shift = 0.0;
+        amplitude = 0.0;
+        frequency = 0.0;
+        negativeShift = 0.0;
     }
 
     public Sinusoid(double shift, double amplitude, double frequency, double negativeShift)
     {
-        _shift=shift;
-        _amplitude=amplitude;
-        _frequency=frequency;
-        _negativeShift=negativeShift;
+        this.shift=shift;
+        this.amplitude=amplitude;
+        this.frequency=frequency;
+        this.negativeShift=negativeShift;
     }
 
     public void SetParameters(double shift, double amplitude, double frequency, double negativeShift)
     {
-        _shift=shift;
-        _amplitude=amplitude;
-        _frequency=frequency;
-        _negativeShift=negativeShift;
+        this.shift=shift;
+        this.amplitude=amplitude;
+        this.frequency=frequency;
+        this.negativeShift=negativeShift;
     }
 
     public override double CalcFunction(double[] point)
     {
-        return _shift + _amplitude * Math.Sin(_frequency * point[0] + _negativeShift) - point[1];
+        return shift + amplitude * Math.Sin(frequency * point[0] + negativeShift) - point[1];
     }
 
     public override double CalcDXFunction(double x)
     {
-        return _amplitude * _frequency * Math.Cos(_frequency * x + _negativeShift);
+        return amplitude * frequency * Math.Cos(frequency * x + negativeShift);
     }
 
     public override double CalcDYFunction(double y)
@@ -49,6 +49,6 @@ public class Sinusoid : Function, IEquatable<Sinusoid>
     public bool Equals(Sinusoid? other)
     {
         const double eps = 10.0e-16;
-        return Math.Abs(_shift - other._shift) < eps && Math.Abs(_amplitude - other._amplitude) < eps && Math.Abs(_frequency - other._frequency) < eps && Math.Abs(_negativeShift - other._negativeShift) < eps;
+        return Math.Abs(shift - other.shift) < eps && Math.Abs(amplitude - other.amplitude) < eps && Math.Abs(frequency - other.frequency) < eps && Math.Abs(negativeShift - other.negativeShift) < eps;
     }
 }
