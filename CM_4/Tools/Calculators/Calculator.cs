@@ -4,16 +4,16 @@ public class Calculator
 {
     public static double[,] MultiplyTransposedOnOriginal(double[,] matrix)
     {
-        var result = new double[matrix.GetLength(0), matrix.GetLength(0)];
-        for (var i = 0; i < matrix.GetLength(0); i++)
+        var result = new double[matrix.GetLength(1), matrix.GetLength(1)];
+        for (var i = 0; i < matrix.GetLength(1); i++)
         {
-            for (var j = 0; j < matrix.GetLength(0); j++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
                 result[i, j] = 0.0;
 
-                for (var k = 0; k < matrix.GetLength(1); k++)
+                for (var k = 0; k < matrix.GetLength(0); k++)
                 {
-                    result[i, j] += matrix[i, k] * matrix[j, k];
+                    result[i, j] += matrix[k, i] * matrix[k, j];
                 }
             }
         }

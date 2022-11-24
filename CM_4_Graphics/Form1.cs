@@ -64,8 +64,8 @@ public partial class Form1 : Form
             {
                 case Line line:
                     pen = new Pen(Color.Purple, 3f);
-                    var a = line.c / -line.a;
-                    var b = line.c / -line.b;
+                    var a = line.C / -line.A;
+                    var b = line.C / -line.B;
                     var x0 = (float)center.X;
                     var y0 = (float)(center.Y - b * scale);
 
@@ -75,8 +75,8 @@ public partial class Form1 : Form
 
                 case Circle circle:
                     pen = new Pen(Color.Blue, 3f);
-                    var upperLeftCorner = new PointF((float)(center.X + (circle.centerX - circle.radius) * scale), (float)(center.Y - (circle.centerY + circle.radius) * scale));
-                    var d = (float)(circle.radius * 2 * scale);
+                    var upperLeftCorner = new PointF((float)(center.X + (circle.CenterX - circle.Radius) * scale), (float)(center.Y - (circle.CenterY + circle.Radius) * scale));
+                    var d = (float)(circle.Radius * 2 * scale);
                     var rectangle = new RectangleF(upperLeftCorner.X, upperLeftCorner.Y, d, d);
                     graphics.DrawEllipse(pen, rectangle);
                     break;
@@ -88,8 +88,8 @@ public partial class Form1 : Form
                     for (var i = 0; i < GraphicBox.Width; i++)
                     {
                         leftPoints[i] = new PointF(i * scale,
-                            (float)(center.Y + sinusoid.shift * scale + sinusoid.amplitude *
-                                Math.Sin(sinusoid.frequency * i + sinusoid.negativeShift) * scale));
+                            (float)(center.Y + sinusoid.Shift * scale + sinusoid.Amplitude *
+                                Math.Sin(sinusoid.Frequency * i + sinusoid.NegativeShift) * scale));
                     }
 
                     graphics.DrawLines(pen, leftPoints);
@@ -190,7 +190,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(ATextBox.Text, out var a))
         {
-            _line.a = a;
+            _line.A = a;
         }
     }
 
@@ -198,7 +198,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(BTextBox.Text, out var b))
         {
-            _line.b = b;
+            _line.B = b;
         }
     }
 
@@ -206,7 +206,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(CTextBox.Text, out var c))
         {
-            _line.c = c;
+            _line.C = c;
         }
     }
 
@@ -214,7 +214,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(CenterXBox.Text, out var centerX))
         {
-            _circle.centerX = centerX;
+            _circle.CenterX = centerX;
         }
     }
 
@@ -222,7 +222,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(CenterYBox.Text, out var centerY))
         {
-            _circle.centerY = centerY;
+            _circle.CenterY = centerY;
         }
     }
 
@@ -230,7 +230,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(RadiusBox.Text, out var radius))
         {
-            _circle.radius = radius;
+            _circle.Radius = radius;
         }
     }
 
@@ -238,7 +238,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(ShiftBox.Text, out var shift))
         {
-            _sinusoid.shift = shift;
+            _sinusoid.Shift = shift;
         }
     }
 
@@ -246,7 +246,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(AmplitudeBox.Text, out var amplitude))
         {
-            _sinusoid.amplitude = amplitude;
+            _sinusoid.Amplitude = amplitude;
         }
     }
 
@@ -254,7 +254,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(FrequencyBox.Text, out var frequency))
         {
-            _sinusoid.frequency = frequency;
+            _sinusoid.Frequency = frequency;
         }
     }
 
@@ -262,7 +262,7 @@ public partial class Form1 : Form
     {
         if (double.TryParse(NegativeShiftBox.Text, out var negativeShift))
         {
-            _sinusoid.negativeShift = negativeShift;
+            _sinusoid.NegativeShift = negativeShift;
         }
     }
 
@@ -276,37 +276,37 @@ public partial class Form1 : Form
         {
             case "Line":
                 _systemProvider.AddFunction(_line);
-                stringBuilder.Append($"{_line.a}x");
-                SignAdder.IdentifySign(stringBuilder, _line.b);
-                stringBuilder.Append($"{Math.Abs(_line.b)}y");
-                SignAdder.IdentifySign(stringBuilder, _line.c);
-                stringBuilder.AppendLine($"{Math.Abs(_line.c)} = 0");
+                stringBuilder.Append($"{_line.A}x");
+                SignAdder.IdentifySign(stringBuilder, _line.B);
+                stringBuilder.Append($"{Math.Abs(_line.B)}y");
+                SignAdder.IdentifySign(stringBuilder, _line.C);
+                stringBuilder.AppendLine($"{Math.Abs(_line.C)} = 0");
                 SystemTextBox.Text = text + stringBuilder;
-                _line = new Line(_line.a, _line.b, _line.c);
+                _line = new Line(_line.A, _line.B, _line.C);
                 break;
             case "Circle":
                 _systemProvider.AddFunction(_circle);
                 stringBuilder.Append("(x");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.centerX);
-                stringBuilder.Append($"{Math.Abs(_circle.centerX)})^2 + (y");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.centerY);
-                stringBuilder.Append($"{Math.Abs(_circle.centerY)})^2");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.radius);
-                stringBuilder.AppendLine($"{Math.Pow(_circle.radius, 2)} = 0");
+                SignAdder.IdentifyInvertSign(stringBuilder, _circle.CenterX);
+                stringBuilder.Append($"{Math.Abs(_circle.CenterX)})^2 + (y");
+                SignAdder.IdentifyInvertSign(stringBuilder, _circle.CenterY);
+                stringBuilder.Append($"{Math.Abs(_circle.CenterY)})^2");
+                SignAdder.IdentifyInvertSign(stringBuilder, _circle.Radius);
+                stringBuilder.AppendLine($"{Math.Pow(_circle.Radius, 2)} = 0");
                 SystemTextBox.Text = text + stringBuilder;
-                _circle = new Circle(_circle.centerX, _circle.centerY, _circle.radius);
+                _circle = new Circle(_circle.CenterX, _circle.CenterY, _circle.Radius);
                 break;
             case "Sinusoid":
                 _systemProvider.AddFunction(_sinusoid);
-                stringBuilder.Append($"{_sinusoid.shift}");
-                SignAdder.IdentifySign(stringBuilder, _sinusoid.amplitude);
-                stringBuilder.Append($"{Math.Abs(_sinusoid.amplitude)}sin(");
-                stringBuilder.Append($"{_sinusoid.frequency}x");
-                SignAdder.IdentifySign(stringBuilder, _sinusoid.negativeShift);
-                stringBuilder.AppendLine($"{Math.Abs(_sinusoid.negativeShift)}) - y = 0");
+                stringBuilder.Append($"{_sinusoid.Shift}");
+                SignAdder.IdentifySign(stringBuilder, _sinusoid.Amplitude);
+                stringBuilder.Append($"{Math.Abs(_sinusoid.Amplitude)}sin(");
+                stringBuilder.Append($"{_sinusoid.Frequency}x");
+                SignAdder.IdentifySign(stringBuilder, _sinusoid.NegativeShift);
+                stringBuilder.AppendLine($"{Math.Abs(_sinusoid.NegativeShift)}) - y = 0");
                 SystemTextBox.Text = text + stringBuilder;
-                _sinusoid = new Sinusoid(_sinusoid.shift, _sinusoid.amplitude, _sinusoid.frequency,
-                    _sinusoid.negativeShift);
+                _sinusoid = new Sinusoid(_sinusoid.Shift, _sinusoid.Amplitude, _sinusoid.Frequency,
+                    _sinusoid.NegativeShift);
                 break;
         }
 
@@ -319,5 +319,10 @@ public partial class Form1 : Form
         var index = text.IndexOf("\n");
         SystemTextBox.Text = text.Remove(0, index + 1);
         _systemProvider.DeleteFunction();
+    }
+
+    public static void GiveInfo()
+    {
+
     }
 }

@@ -61,6 +61,13 @@
             this.SystemLabel = new System.Windows.Forms.Label();
             this.AddFunctionButton = new System.Windows.Forms.Button();
             this.DeleteFunctionButton = new System.Windows.Forms.Button();
+            this.XTextBox = new System.Windows.Forms.TextBox();
+            this.YTextBox = new System.Windows.Forms.TextBox();
+            this.XLabel = new System.Windows.Forms.Label();
+            this.YLabel = new System.Windows.Forms.Label();
+            this.PointButton = new System.Windows.Forms.Button();
+            this.IterationInfoLabel = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SinusoidBox.SuspendLayout();
             this.LineBox.SuspendLayout();
             this.CircleBox.SuspendLayout();
@@ -336,9 +343,9 @@
             // 
             // GraphicBox
             // 
-            this.GraphicBox.Location = new System.Drawing.Point(167, 174);
+            this.GraphicBox.Location = new System.Drawing.Point(168, 174);
             this.GraphicBox.Name = "GraphicBox";
-            this.GraphicBox.Size = new System.Drawing.Size(1310, 435);
+            this.GraphicBox.Size = new System.Drawing.Size(1081, 435);
             this.GraphicBox.TabIndex = 11;
             this.GraphicBox.TabStop = false;
             // 
@@ -380,7 +387,7 @@
             this.SystemTextBox.Multiline = true;
             this.SystemTextBox.Name = "SystemTextBox";
             this.SystemTextBox.ReadOnly = true;
-            this.SystemTextBox.Size = new System.Drawing.Size(866, 126);
+            this.SystemTextBox.Size = new System.Drawing.Size(315, 126);
             this.SystemTextBox.TabIndex = 9;
             // 
             // SystemLabel
@@ -395,9 +402,9 @@
             // 
             // AddFunctionButton
             // 
-            this.AddFunctionButton.Location = new System.Drawing.Point(503, 14);
+            this.AddFunctionButton.Location = new System.Drawing.Point(503, 30);
             this.AddFunctionButton.Name = "AddFunctionButton";
-            this.AddFunctionButton.Size = new System.Drawing.Size(101, 62);
+            this.AddFunctionButton.Size = new System.Drawing.Size(101, 50);
             this.AddFunctionButton.TabIndex = 12;
             this.AddFunctionButton.Text = "AddFunction";
             this.AddFunctionButton.UseVisualStyleBackColor = true;
@@ -405,19 +412,87 @@
             // 
             // DeleteFunctionButton
             // 
-            this.DeleteFunctionButton.Location = new System.Drawing.Point(503, 94);
+            this.DeleteFunctionButton.Location = new System.Drawing.Point(503, 97);
             this.DeleteFunctionButton.Name = "DeleteFunctionButton";
-            this.DeleteFunctionButton.Size = new System.Drawing.Size(101, 62);
+            this.DeleteFunctionButton.Size = new System.Drawing.Size(101, 52);
             this.DeleteFunctionButton.TabIndex = 13;
             this.DeleteFunctionButton.Text = "DeleteFunction";
             this.DeleteFunctionButton.UseVisualStyleBackColor = true;
             this.DeleteFunctionButton.Click += new System.EventHandler(this.DeleteFunctionButton_Click);
             // 
+            // XTextBox
+            // 
+            this.XTextBox.Location = new System.Drawing.Point(34, 94);
+            this.XTextBox.Name = "XTextBox";
+            this.XTextBox.Size = new System.Drawing.Size(100, 23);
+            this.XTextBox.TabIndex = 15;
+            // 
+            // YTextBox
+            // 
+            this.YTextBox.Location = new System.Drawing.Point(34, 126);
+            this.YTextBox.Name = "YTextBox";
+            this.YTextBox.Size = new System.Drawing.Size(100, 23);
+            this.YTextBox.TabIndex = 16;
+            // 
+            // XLabel
+            // 
+            this.XLabel.AutoSize = true;
+            this.XLabel.Location = new System.Drawing.Point(14, 97);
+            this.XLabel.Name = "XLabel";
+            this.XLabel.Size = new System.Drawing.Size(14, 15);
+            this.XLabel.TabIndex = 17;
+            this.XLabel.Text = "X";
+            // 
+            // YLabel
+            // 
+            this.YLabel.AutoSize = true;
+            this.YLabel.Location = new System.Drawing.Point(14, 129);
+            this.YLabel.Name = "YLabel";
+            this.YLabel.Size = new System.Drawing.Size(14, 15);
+            this.YLabel.TabIndex = 18;
+            this.YLabel.Text = "Y";
+            // 
+            // PointButton
+            // 
+            this.PointButton.Location = new System.Drawing.Point(140, 97);
+            this.PointButton.Name = "PointButton";
+            this.PointButton.Size = new System.Drawing.Size(140, 47);
+            this.PointButton.TabIndex = 19;
+            this.PointButton.Text = "Input Point";
+            this.PointButton.UseVisualStyleBackColor = true;
+            // 
+            // IterationInfoLabel
+            // 
+            this.IterationInfoLabel.AutoSize = true;
+            this.IterationInfoLabel.Location = new System.Drawing.Point(934, 9);
+            this.IterationInfoLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.IterationInfoLabel.Name = "IterationInfoLabel";
+            this.IterationInfoLabel.Size = new System.Drawing.Size(75, 15);
+            this.IterationInfoLabel.TabIndex = 21;
+            this.IterationInfoLabel.Text = "Iteration Info";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(934, 30);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(315, 126);
+            this.textBox1.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1490, 621);
+            this.ClientSize = new System.Drawing.Size(1266, 621);
+            this.Controls.Add(this.IterationInfoLabel);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.PointButton);
+            this.Controls.Add(this.YLabel);
+            this.Controls.Add(this.XLabel);
+            this.Controls.Add(this.YTextBox);
+            this.Controls.Add(this.XTextBox);
             this.Controls.Add(this.CircleBox);
             this.Controls.Add(this.DeleteFunctionButton);
             this.Controls.Add(this.AddFunctionButton);
@@ -483,6 +558,12 @@
         private TextBox RadiusBox;
         private TextBox CenterYBox;
         private TextBox CenterXBox;
+        private TextBox XTextBox;
+        private TextBox YTextBox;
+        private Label XLabel;
+        private Label YLabel;
+        private Button PointButton;
+        private Label IterationInfoLabel;
+        private TextBox textBox1;
     }
 }
-

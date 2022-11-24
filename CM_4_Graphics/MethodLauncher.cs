@@ -20,9 +20,10 @@ public class MethodLauncher
 
         var matrix = new Matrix();
 
-        var result = method.Solve(system, matrix, point, eps1, eps2, maxIter);
-        var type = method.GetType();
-        pointO.Write(result.Item1[^1], $"{type.Name}.txt");
-        return result;
+        //var result = method.Solve(system, matrix, point, eps1, eps2, maxIter);
+        //var type = method.GetType();
+        //pointO.Write(result.Item1[^1], $"{type.Name}.txt");
+        //return result;
+        throw new NotImplementedException();
     }
 }

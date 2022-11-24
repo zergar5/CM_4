@@ -2,43 +2,43 @@
 
 public class Sinusoid : Function, IEquatable<Sinusoid>
 {
-    public double shift;
-    public double amplitude;
-    public double frequency;
-    public double negativeShift;
+    public double Shift { get; set; }
+    public double Amplitude { get; set; }
+    public double Frequency { get; set; }
+    public double NegativeShift { get; set; }
 
     public Sinusoid()
     {
-        shift = 0.0;
-        amplitude = 0.0;
-        frequency = 0.0;
-        negativeShift = 0.0;
+        Shift = 0.0;
+        Amplitude = 0.0;
+        Frequency = 0.0;
+        NegativeShift = 0.0;
     }
 
     public Sinusoid(double shift, double amplitude, double frequency, double negativeShift)
     {
-        this.shift=shift;
-        this.amplitude=amplitude;
-        this.frequency=frequency;
-        this.negativeShift=negativeShift;
+        this.Shift=shift;
+        this.Amplitude=amplitude;
+        this.Frequency=frequency;
+        this.NegativeShift=negativeShift;
     }
 
     public void SetParameters(double shift, double amplitude, double frequency, double negativeShift)
     {
-        this.shift=shift;
-        this.amplitude=amplitude;
-        this.frequency=frequency;
-        this.negativeShift=negativeShift;
+        this.Shift=shift;
+        this.Amplitude=amplitude;
+        this.Frequency=frequency;
+        this.NegativeShift=negativeShift;
     }
 
     public override double CalcFunction(double[] point)
     {
-        return shift + amplitude * Math.Sin(frequency * point[0] + negativeShift) - point[1];
+        return Shift + Amplitude * Math.Sin(Frequency * point[0] + NegativeShift) - point[1];
     }
 
     public override double CalcDXFunction(double x)
     {
-        return amplitude * frequency * Math.Cos(frequency * x + negativeShift);
+        return Amplitude * Frequency * Math.Cos(Frequency * x + NegativeShift);
     }
 
     public override double CalcDYFunction(double y)
@@ -49,6 +49,6 @@ public class Sinusoid : Function, IEquatable<Sinusoid>
     public bool Equals(Sinusoid? other)
     {
         const double eps = 10.0e-16;
-        return Math.Abs(shift - other.shift) < eps && Math.Abs(amplitude - other.amplitude) < eps && Math.Abs(frequency - other.frequency) < eps && Math.Abs(negativeShift - other.negativeShift) < eps;
+        return Math.Abs(Shift - other.Shift) < eps && Math.Abs(Amplitude - other.Amplitude) < eps && Math.Abs(Frequency - other.Frequency) < eps && Math.Abs(NegativeShift - other.NegativeShift) < eps;
     }
 }

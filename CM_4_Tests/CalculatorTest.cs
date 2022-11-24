@@ -25,9 +25,8 @@ namespace CM_4_Tests
         {
             var actual = new[,]
             {
-                { 5.0, 11.0, 17.0 },
-                { 11.0, 25, 39.0 },
-                { 17.0, 39.0, 61.0 }
+                { 35.0, 44.0 },
+                { 44.0, 56.0 }
             };
             var expected = Calculator.MultiplyTransposedOnOriginal(_matrix);
             CollectionAssert.AreEqual(expected, actual);

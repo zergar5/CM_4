@@ -7,10 +7,12 @@ namespace CM_4.SymmetrizationVariants;
 
 public class TransposeNumerically : IMethod
 {
-    public (List<double[]>, List<double>) Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter)
+    public void Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter,
+        out List<double[]> points, out List<double> norms, out List<double> betas)
     {
-        var points = new List<double[]>();
-        var norms = new List<double>();
+        points = new List<double[]>();
+        norms = new List<double>();
+        betas = new List<double>();
         var beta = 1.0;
         var residual = 1.0;
         var f = SystemCalculator.CalcF(system, point);
@@ -18,9 +20,8 @@ public class TransposeNumerically : IMethod
         var startPoint = new double[point.Length];
         Array.Copy(point, startPoint, point.Length);
         points.Add(startPoint);
-        points.Add(startPoint);
         norms.Add(normF0);
-        for (var i = 1; i < maxIter && beta > eps1 && residual > eps2; i++)
+        for (var i = 1; i < maxIter && residual > eps2; i++)
         {
             f = SystemCalculator.CalcF(system, point);
             var normFPrev = Calculator.CalcNorm(f);
@@ -41,7 +42,7 @@ public class TransposeNumerically : IMethod
             var fNext = SystemCalculator.CalcF(system, nextPoint);
             var normF = Calculator.CalcNorm(fNext);
 
-            while (normF > normFPrev)
+            while (normF > normFPrev && beta > eps1)
             {
                 beta /= 2.0;
                 var betaDeltaX = Calculator.MultiplyVectorOnNumber(deltaX, beta);
@@ -59,8 +60,7 @@ public class TransposeNumerically : IMethod
 
             points.Add(point);
             norms.Add(normF);
+            betas.Add(beta);
         }
-
-        return (points, norms);
     }
 }

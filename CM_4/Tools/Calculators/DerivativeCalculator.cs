@@ -4,8 +4,9 @@ namespace CM_4.Tools.Calculators;
 
 public class DerivativeCalculator
 {
-    private static double _delta = 0.001;
-    private static Dictionary<char, int> _point = new()
+    private const double _delta = 0.001;
+
+    private static readonly Dictionary<char, int> _point = new()
     {
         {'x', 0},
         {'y', 1}
