@@ -7,12 +7,18 @@ namespace CM_4.SymmetrizationVariants;
 
 public class EliminateAnalytically : IMethod
 {
-    public double[] Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter)
+    public (List<double[]>, List<double>) Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter)
     {
+        var points = new List<double[]>();
+        var norms = new List<double>();
         var beta = 1.0;
         var residual = 1.0;
         var f = SystemCalculator.CalcF(system, point);
         var normF0 = Calculator.CalcNorm(f);
+        var startPoint = new double[point.Length];
+        Array.Copy(point, startPoint, point.Length);
+        points.Add(startPoint);
+        norms.Add(normF0);
         for (var i = 1; i < maxIter && beta > eps1 && residual > eps2; i++)
         {
             f = SystemCalculator.CalcF(system, point);
@@ -45,12 +51,15 @@ public class EliminateAnalytically : IMethod
 
             point = nextPoint;
 
-            CourseHolder.GetInfo(i, beta, point, normF);
+            //CourseHolder.GetInfo(i, beta, point, normF);
 
             residual = normF / normF0;
+
+            points.Add(point);
+            norms.Add(normF);
         }
 
-        return point;
+        return (points, norms);
     }
 
     //public double[] SolveNumerically(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter, DerivativeCalculator derivativeCalculator)

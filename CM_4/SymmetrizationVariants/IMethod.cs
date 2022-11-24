@@ -6,5 +6,5 @@ namespace CM_4.SymmetrizationVariants;
 
 public interface IMethod
 {
-    public double[] Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter);
+    public (List<double[]>, List<double>) Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter);
 }

@@ -1,4 +1,5 @@
 using System.CodeDom;
+using System.Drawing.Drawing2D;
 using System.Net.Http.Headers;
 using System.Text;
 using CM_4.Models.Functions;
@@ -30,6 +31,8 @@ public partial class Form1 : Form
         var graphics = GraphicBox.CreateGraphics();
         graphics.Clear(Color.White);
 
+        const int scale = 33;
+
         var font = new Font("TimesNewRoman", 9, FontStyle.Regular);
         var stringFormat = new StringFormat();
         stringFormat.Alignment = StringAlignment.Center;
@@ -45,13 +48,13 @@ public partial class Form1 : Form
         for (var i = 1; i < Width; i++)
         {
             graphics.DrawString($"{i}", font, Brushes.Black,
-                new Point(center.X + i * 25, center.Y + 10), stringFormat);
+                new Point(center.X + i * scale, center.Y + 10), stringFormat);
             graphics.DrawString($"{-i}", font, Brushes.Black,
-                new Point(center.X - i * 25, center.Y + 10), stringFormat);
+                new Point(center.X - i * scale, center.Y + 10), stringFormat);
             graphics.DrawString($"{i}", font, Brushes.Black,
-                new Point(center.X - 10, center.Y - i * 25), stringFormat);
+                new Point(center.X - 10, center.Y - i * scale), stringFormat);
             graphics.DrawString($"{-i}", font, Brushes.Black,
-                new Point(center.X - 10, center.Y + i * 25), stringFormat);
+                new Point(center.X - 10, center.Y + i * scale), stringFormat);
 
         }
 
@@ -60,43 +63,88 @@ public partial class Form1 : Form
             switch (function)
             {
                 case Line line:
-                {
-                    pen = new Pen(Color.Red, 3f);
+                    pen = new Pen(Color.Purple, 3f);
                     var a = line.c / -line.a;
                     var b = line.c / -line.b;
                     var x0 = (float)center.X;
-                    var y0 = (float)(center.Y - b * 25);
+                    var y0 = (float)(center.Y - b * scale);
 
-                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 - GraphicBox.Width * a * 25), (float)(y0 - GraphicBox.Width * b * 25)));
-                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 + GraphicBox.Width * a * 25), (float)(y0 + GraphicBox.Width * b * 25)));
+                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 - GraphicBox.Width * a * scale), (float)(y0 - GraphicBox.Width * b * scale)));
+                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 + GraphicBox.Width * a * scale), (float)(y0 + GraphicBox.Width * b * scale)));
                     break;
-                }
+
                 case Circle circle:
-                {
                     pen = new Pen(Color.Blue, 3f);
-                    var upperLeftCorner = new PointF((float)(center.X + (circle.centerX - circle.radius) * 25), (float)(center.Y - (circle.centerY + circle.radius) * 25));
-                    var d = (float)(circle.radius * 2 * 25);
+                    var upperLeftCorner = new PointF((float)(center.X + (circle.centerX - circle.radius) * scale), (float)(center.Y - (circle.centerY + circle.radius) * scale));
+                    var d = (float)(circle.radius * 2 * scale);
                     var rectangle = new RectangleF(upperLeftCorner.X, upperLeftCorner.Y, d, d);
                     graphics.DrawEllipse(pen, rectangle);
                     break;
-                }
+
                 case Sinusoid sinusoid:
-                {
                     pen = new Pen(Color.LimeGreen, 2f);
                     var leftPoints = new PointF[GraphicBox.Width];
                     var rightPoints = new PointF[GraphicBox.Width];
                     for (var i = 0; i < GraphicBox.Width; i++)
                     {
-                        leftPoints[i] = new PointF(i * 5, 
-                            (float)(center.Y + sinusoid.shift * 5 + sinusoid.amplitude * 
-                                Math.Sin(sinusoid.frequency * i + sinusoid.negativeShift) * 5));
+                        leftPoints[i] = new PointF(i * scale,
+                            (float)(center.Y + sinusoid.shift * scale + sinusoid.amplitude *
+                                Math.Sin(sinusoid.frequency * i + sinusoid.negativeShift) * scale));
                     }
 
                     graphics.DrawLines(pen, leftPoints);
                     graphics.DrawLines(pen, rightPoints);
                     break;
-                }
             }
+        }
+
+        switch (_method)
+        {
+            case EliminateAnalytically eliminateAnalytically:
+                
+                var (points, norms) = MethodLauncher.LaunchMethod(eliminateAnalytically, _systemProvider.Functions);
+                
+                var drawPoints = new PointF[points.Count];
+                for (var i = 0; i < points.Count; i++)
+                {
+                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
+                        (float)(center.Y - points[i][1] * scale));
+                }
+
+                var linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
+                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
+                pen = new Pen(linearGradient, 3f);
+                graphics.DrawLines(pen, drawPoints);
+                break;
+            case TransposeAnalytically transposeAnalytically:
+                (points, norms) = MethodLauncher.LaunchMethod(transposeAnalytically, _systemProvider.Functions);
+
+                drawPoints = new PointF[points.Count];
+                for (var i = 0; i < points.Count; i++)
+                {
+                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
+                        (float)(center.Y - points[i][1] * scale));
+                }
+                linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
+                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
+                pen = new Pen(linearGradient, 3f);
+                graphics.DrawLines(pen, drawPoints);
+                break;
+            case TransposeNumerically transposeNumerically:
+                (points, norms) = MethodLauncher.LaunchMethod(transposeNumerically, _systemProvider.Functions);
+
+                drawPoints = new PointF[points.Count];
+                for (var i = 0; i < points.Count; i++)
+                {
+                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
+                        (float)(center.Y - points[i][1] * scale));
+                }
+                graphics.DrawLines(pen, drawPoints);
+                linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
+                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
+                pen = new Pen(linearGradient, 3f);
+                graphics.DrawLines(pen, drawPoints);
+                break;
         }
     }
 

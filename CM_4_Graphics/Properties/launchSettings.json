@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CM_4_Graphics": {
+      "commandName": "Project",
+      "workingDirectory": "..\\CM_4\\"
+    }
+  }
+}

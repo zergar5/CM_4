@@ -336,9 +336,9 @@
             // 
             // GraphicBox
             // 
-            this.GraphicBox.Location = new System.Drawing.Point(141, 174);
+            this.GraphicBox.Location = new System.Drawing.Point(167, 174);
             this.GraphicBox.Name = "GraphicBox";
-            this.GraphicBox.Size = new System.Drawing.Size(780, 435);
+            this.GraphicBox.Size = new System.Drawing.Size(1310, 435);
             this.GraphicBox.TabIndex = 11;
             this.GraphicBox.TabStop = false;
             // 
@@ -364,10 +364,10 @@
             // 
             // SolveButton
             // 
-            this.SolveButton.Location = new System.Drawing.Point(14, 89);
+            this.SolveButton.Location = new System.Drawing.Point(13, 174);
             this.SolveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SolveButton.Name = "SolveButton";
-            this.SolveButton.Size = new System.Drawing.Size(267, 67);
+            this.SolveButton.Size = new System.Drawing.Size(147, 45);
             this.SolveButton.TabIndex = 6;
             this.SolveButton.Text = "Решить задачу";
             this.SolveButton.UseVisualStyleBackColor = true;
@@ -375,18 +375,18 @@
             // 
             // SystemTextBox
             // 
-            this.SystemTextBox.Location = new System.Drawing.Point(611, 25);
+            this.SystemTextBox.Location = new System.Drawing.Point(611, 30);
             this.SystemTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SystemTextBox.Multiline = true;
             this.SystemTextBox.Name = "SystemTextBox";
             this.SystemTextBox.ReadOnly = true;
-            this.SystemTextBox.Size = new System.Drawing.Size(309, 131);
+            this.SystemTextBox.Size = new System.Drawing.Size(866, 126);
             this.SystemTextBox.TabIndex = 9;
             // 
             // SystemLabel
             // 
             this.SystemLabel.AutoSize = true;
-            this.SystemLabel.Location = new System.Drawing.Point(611, 7);
+            this.SystemLabel.Location = new System.Drawing.Point(611, 9);
             this.SystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SystemLabel.Name = "SystemLabel";
             this.SystemLabel.Size = new System.Drawing.Size(45, 15);
@@ -417,7 +417,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 621);
+            this.ClientSize = new System.Drawing.Size(1490, 621);
             this.Controls.Add(this.CircleBox);
             this.Controls.Add(this.DeleteFunctionButton);
             this.Controls.Add(this.AddFunctionButton);
