@@ -1,19 +1,22 @@
 using System.CodeDom;
 using System.Drawing.Drawing2D;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Text;
+using CM_4.IO;
+using CM_4.Models;
 using CM_4.Models.Functions;
 using CM_4.SymmetrizationVariants;
+using Matrix = CM_4.Models.Matrix;
 
 namespace CM_4_Graphics;
 
 public partial class Form1 : Form
 {
     private SystemProvider _systemProvider;
-    private IMethod? _method;
-    private Line _line;
-    private Circle _circle;
-    private Sinusoid _sinusoid;
+    private Method? _method;
+    private double[] _point;
+    private const double Eps = 10.0e-16;
 
     public Form1()
     {
@@ -27,124 +30,76 @@ public partial class Form1 : Form
 
     private void SolveButton_Click(object sender, EventArgs e)
     {
-        if (_method == null || _systemProvider.Functions == null) return;
+        var system = _systemProvider.Functions;
+        if (system == null || system.Count < 2 || _method == null) return;
+
         var graphics = GraphicBox.CreateGraphics();
         graphics.Clear(Color.White);
 
-        const int scale = 33;
+        const int scale = 29;
+        const int xSize = 17;
+        const int ySize = 8;
 
         var font = new Font("TimesNewRoman", 9, FontStyle.Regular);
-        var stringFormat = new StringFormat();
-        stringFormat.Alignment = StringAlignment.Center;
-        stringFormat.LineAlignment = StringAlignment.Center;
-        var center = new Point(GraphicBox.Width/2, GraphicBox.Height/2);
-        var pen = new Pen(Color.Black, 1f);
 
-        graphics.DrawLine(pen, center, center with { X = GraphicBox.Width });
-        graphics.DrawLine(pen, center, center with { X = 0 });
-        graphics.DrawLine(pen, center, center with { Y = 0 });
-        graphics.DrawLine(pen, center, center with { Y = GraphicBox.Height });
+        var center = new Point(GraphicBox.Width / 2, GraphicBox.Height / 2);
 
-        for (var i = 1; i < Width; i++)
-        {
-            graphics.DrawString($"{i}", font, Brushes.Black,
-                new Point(center.X + i * scale, center.Y + 10), stringFormat);
-            graphics.DrawString($"{-i}", font, Brushes.Black,
-                new Point(center.X - i * scale, center.Y + 10), stringFormat);
-            graphics.DrawString($"{i}", font, Brushes.Black,
-                new Point(center.X - 10, center.Y - i * scale), stringFormat);
-            graphics.DrawString($"{-i}", font, Brushes.Black,
-                new Point(center.X - 10, center.Y + i * scale), stringFormat);
+        GradationDrawer.DrawGradation(graphics, system, center, xSize, ySize, scale);
 
-        }
+        CoordinateSystemDrawer.DrawCoordinateSystem(graphics, center, font, scale, xSize, ySize);
 
-        foreach (var function in _systemProvider.Functions)
+        foreach (var function in system)
         {
             switch (function)
             {
                 case Line line:
-                    pen = new Pen(Color.Purple, 3f);
-                    var a = line.C / -line.A;
-                    var b = line.C / -line.B;
-                    var x0 = (float)center.X;
-                    var y0 = (float)(center.Y - b * scale);
-
-                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 - GraphicBox.Width * a * scale), (float)(y0 - GraphicBox.Width * b * scale)));
-                    graphics.DrawLine(pen, new PointF(x0, y0), new PointF((float)(x0 + GraphicBox.Width * a * scale), (float)(y0 + GraphicBox.Width * b * scale)));
+                    SystemDrawer.DrawLine(graphics, line, center, scale, Eps);
                     break;
 
                 case Circle circle:
-                    pen = new Pen(Color.Blue, 3f);
-                    var upperLeftCorner = new PointF((float)(center.X + (circle.CenterX - circle.Radius) * scale), (float)(center.Y - (circle.CenterY + circle.Radius) * scale));
-                    var d = (float)(circle.Radius * 2 * scale);
-                    var rectangle = new RectangleF(upperLeftCorner.X, upperLeftCorner.Y, d, d);
-                    graphics.DrawEllipse(pen, rectangle);
+                    SystemDrawer.DrawCircle(graphics, circle, center, scale);
                     break;
 
                 case Sinusoid sinusoid:
-                    pen = new Pen(Color.LimeGreen, 2f);
-                    var leftPoints = new PointF[GraphicBox.Width];
-                    var rightPoints = new PointF[GraphicBox.Width];
-                    for (var i = 0; i < GraphicBox.Width; i++)
-                    {
-                        leftPoints[i] = new PointF(i * scale,
-                            (float)(center.Y + sinusoid.Shift * scale + sinusoid.Amplitude *
-                                Math.Sin(sinusoid.Frequency * i + sinusoid.NegativeShift) * scale));
-                    }
-
-                    graphics.DrawLines(pen, leftPoints);
-                    graphics.DrawLines(pen, rightPoints);
+                    SystemDrawer.DrawSinusoid(graphics, sinusoid, center, scale);
                     break;
             }
         }
 
-        switch (_method)
+        if (_point == null) return;
         {
-            case EliminateAnalytically eliminateAnalytically:
-                
-                var (points, norms) = MethodLauncher.LaunchMethod(eliminateAnalytically, _systemProvider.Functions);
-                
-                var drawPoints = new PointF[points.Count];
-                for (var i = 0; i < points.Count; i++)
-                {
-                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
-                        (float)(center.Y - points[i][1] * scale));
-                }
+            var pen = new Pen(Color.FromArgb(255, 40, 40), 3f);
 
-                var linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
-                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
-                pen = new Pen(linearGradient, 3f);
-                graphics.DrawLines(pen, drawPoints);
-                break;
-            case TransposeAnalytically transposeAnalytically:
-                (points, norms) = MethodLauncher.LaunchMethod(transposeAnalytically, _systemProvider.Functions);
+            var pointO = new PointIO("../CM_4/Output/");
+            var parameterI = new ParametersIO("../CM_4/Input/");
 
-                drawPoints = new PointF[points.Count];
-                for (var i = 0; i < points.Count; i++)
-                {
-                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
-                        (float)(center.Y - points[i][1] * scale));
-                }
-                linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
-                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
-                pen = new Pen(linearGradient, 3f);
-                graphics.DrawLines(pen, drawPoints);
-                break;
-            case TransposeNumerically transposeNumerically:
-                (points, norms) = MethodLauncher.LaunchMethod(transposeNumerically, _systemProvider.Functions);
+            var matrix = new Matrix();
 
-                drawPoints = new PointF[points.Count];
-                for (var i = 0; i < points.Count; i++)
-                {
-                    drawPoints[i] = new PointF((float)(center.X + points[i][0] * scale),
-                        (float)(center.Y - points[i][1] * scale));
-                }
-                graphics.DrawLines(pen, drawPoints);
-                linearGradient = new LinearGradientBrush(new PointF(drawPoints[0].X - 25, drawPoints[0].Y - 25),
-                    new PointF(drawPoints[^1].X + 25, drawPoints[^1].Y + 25), Color.Red, Color.DarkOrange);
-                pen = new Pen(linearGradient, 3f);
-                graphics.DrawLines(pen, drawPoints);
-                break;
+            var (eps1, eps2, maxIter) = parameterI.ReadParameters("parameters.txt");
+
+            var point = new double[_point.Length];
+
+            var i = 1;
+
+            var startPoint = new PointF((float)(center.X + _point[0] * scale),
+                (float)(center.Y - _point[1] * scale));
+
+            foreach (var iteration in
+                     _method.Solve(system, matrix, _point, eps1, eps2, maxIter))
+            {
+                IterationInfoBox.Text = CourseHolder.GetInfo(i++, iteration);
+                IterationInfoBox.Update();
+
+                point = iteration.point;
+                var drawPoint = new PointF((float)(center.X + point[0] * scale),
+                    (float)(center.Y - point[1] * scale));
+                graphics.DrawLine(pen, startPoint, drawPoint);
+                startPoint = drawPoint;
+            }
+
+            CourseHolder.DrawInfo(graphics, startPoint, point, font, pen);
+
+            pointO.Write(point, $"{_method.GetType().Name}.txt");
         }
     }
 
@@ -154,19 +109,16 @@ public partial class Form1 : Form
         switch (selectedFunction)
         {
             case "Line":
-                _line = new Line();
                 LineBox.Visible = true;
                 CircleBox.Visible = false;
                 SinusoidBox.Visible = false;
                 break;
             case "Circle":
-                _circle = new Circle();
                 LineBox.Visible = false;
                 CircleBox.Visible = true;
                 SinusoidBox.Visible = false;
                 break;
             case "Sinusoid":
-                _sinusoid = new Sinusoid();
                 LineBox.Visible = false;
                 CircleBox.Visible = false;
                 SinusoidBox.Visible = true;
@@ -186,130 +138,51 @@ public partial class Form1 : Form
         };
     }
 
-    private void ATextBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(ATextBox.Text, out var a))
-        {
-            _line.A = a;
-        }
-    }
-
-    private void BTextBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(BTextBox.Text, out var b))
-        {
-            _line.B = b;
-        }
-    }
-
-    private void CTextBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(CTextBox.Text, out var c))
-        {
-            _line.C = c;
-        }
-    }
-
-    private void CenterXBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(CenterXBox.Text, out var centerX))
-        {
-            _circle.CenterX = centerX;
-        }
-    }
-
-    private void CenterYBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(CenterYBox.Text, out var centerY))
-        {
-            _circle.CenterY = centerY;
-        }
-    }
-
-    private void RadiusBox_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(RadiusBox.Text, out var radius))
-        {
-            _circle.Radius = radius;
-        }
-    }
-
-    private void Shift_TextChanged(object? sender, EventArgs e)
-    {
-        if (double.TryParse(ShiftBox.Text, out var shift))
-        {
-            _sinusoid.Shift = shift;
-        }
-    }
-
-    private void Amplitude_TextChanged(object? sender, EventArgs e)
-    {
-        if (double.TryParse(AmplitudeBox.Text, out var amplitude))
-        {
-            _sinusoid.Amplitude = amplitude;
-        }
-    }
-
-    private void Frequency_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(FrequencyBox.Text, out var frequency))
-        {
-            _sinusoid.Frequency = frequency;
-        }
-    }
-
-    private void NegativeShift_TextChanged(object sender, EventArgs e)
-    {
-        if (double.TryParse(NegativeShiftBox.Text, out var negativeShift))
-        {
-            _sinusoid.NegativeShift = negativeShift;
-        }
-    }
-
     private void AddFunctionButton_Click(object sender, EventArgs e)
     {
         if (FunctionsBox.SelectedItem == null) return;
         var selectedFunction = FunctionsBox.SelectedItem.ToString();
-        var stringBuilder = new StringBuilder();
+
+        var functionText = "";
         var text = SystemTextBox.Text;
+
         switch (selectedFunction)
         {
             case "Line":
-                _systemProvider.AddFunction(_line);
-                stringBuilder.Append($"{_line.A}x");
-                SignAdder.IdentifySign(stringBuilder, _line.B);
-                stringBuilder.Append($"{Math.Abs(_line.B)}y");
-                SignAdder.IdentifySign(stringBuilder, _line.C);
-                stringBuilder.AppendLine($"{Math.Abs(_line.C)} = 0");
-                SystemTextBox.Text = text + stringBuilder;
-                _line = new Line(_line.A, _line.B, _line.C);
+                if (!double.TryParse(ATextBox.Text, out var a)) a = 0.0;
+                if (!double.TryParse(BTextBox.Text, out var b)) b = 0.0;
+                if (!double.TryParse(CTextBox.Text, out var c)) c = 0.0;
+                if (Math.Abs(a) < Eps && Math.Abs(b) < Eps) return;
+
+                var line = new Line(a, b, c);
+                _systemProvider.AddFunction(line);
+
+                functionText = SystemRepresentator.RepresentLine(line, Eps);
                 break;
             case "Circle":
-                _systemProvider.AddFunction(_circle);
-                stringBuilder.Append("(x");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.CenterX);
-                stringBuilder.Append($"{Math.Abs(_circle.CenterX)})^2 + (y");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.CenterY);
-                stringBuilder.Append($"{Math.Abs(_circle.CenterY)})^2");
-                SignAdder.IdentifyInvertSign(stringBuilder, _circle.Radius);
-                stringBuilder.AppendLine($"{Math.Pow(_circle.Radius, 2)} = 0");
-                SystemTextBox.Text = text + stringBuilder;
-                _circle = new Circle(_circle.CenterX, _circle.CenterY, _circle.Radius);
+                if (!double.TryParse(CenterXBox.Text, out var centerX)) centerX = 0.0;
+                if (!double.TryParse(CenterYBox.Text, out var centerY)) centerY = 0.0;
+                if (!double.TryParse(RadiusBox.Text, out var radius)) radius = 0.0;
+                if (Math.Abs(radius) < Eps || radius < Eps) return;
+
+                var circle = new Circle(centerX, centerY, radius);
+                _systemProvider.AddFunction(circle);
+
+                functionText = SystemRepresentator.RepresentCircle(circle, Eps);
                 break;
             case "Sinusoid":
-                _systemProvider.AddFunction(_sinusoid);
-                stringBuilder.Append($"{_sinusoid.Shift}");
-                SignAdder.IdentifySign(stringBuilder, _sinusoid.Amplitude);
-                stringBuilder.Append($"{Math.Abs(_sinusoid.Amplitude)}sin(");
-                stringBuilder.Append($"{_sinusoid.Frequency}x");
-                SignAdder.IdentifySign(stringBuilder, _sinusoid.NegativeShift);
-                stringBuilder.AppendLine($"{Math.Abs(_sinusoid.NegativeShift)}) - y = 0");
-                SystemTextBox.Text = text + stringBuilder;
-                _sinusoid = new Sinusoid(_sinusoid.Shift, _sinusoid.Amplitude, _sinusoid.Frequency,
-                    _sinusoid.NegativeShift);
+                if (!double.TryParse(ShiftBox.Text, out var shift)) shift = 0.0;
+                if (!double.TryParse(AmplitudeBox.Text, out var amplitude)) amplitude = 0.0;
+                if (!double.TryParse(FrequencyBox.Text, out var frequency)) frequency = 0.0;
+                if (!double.TryParse(NegativeShiftBox.Text, out var negativeShift)) negativeShift = 0.0;
+
+                var sinusoid = new Sinusoid(shift, amplitude, frequency, negativeShift);
+                _systemProvider.AddFunction(sinusoid);
+
+                functionText = SystemRepresentator.RepresentSinusoid(sinusoid, Eps);
                 break;
         }
-
+        SystemTextBox.Text = text + functionText;
     }
 
     private void DeleteFunctionButton_Click(object sender, EventArgs e)
@@ -321,8 +194,10 @@ public partial class Form1 : Form
         _systemProvider.DeleteFunction();
     }
 
-    public static void GiveInfo()
+    private void PointButton_Click(object sender, EventArgs e)
     {
-
+        if (!double.TryParse(XTextBox.Text, out var x)) x = 0.0;
+        if (!double.TryParse(YTextBox.Text, out var y)) y = 0.0;
+        _point = new[] { x, y };
     }
 }

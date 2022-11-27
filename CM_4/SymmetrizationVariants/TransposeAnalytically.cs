@@ -5,25 +5,17 @@ using CM_4.Tools.Calculators;
 
 namespace CM_4.SymmetrizationVariants;
 
-public class TransposeAnalytically : IMethod
+public class TransposeAnalytically : Method
 {
-    public void Solve(List<Function> system, Matrix matrix, double[] point, double eps1, double eps2, int maxIter,
-        out List<double[]> points, out List<double> norms, out List<double> betas)
+    public override IEnumerable<(double[] point, double norm, double beta)> Solve(List<Function> system, Matrix matrix, double[] startPoint, double eps1, double eps2, int maxIter)
     {
-        points = new List<double[]>();
-        norms = new List<double>();
-        betas = new List<double>();
-        var beta = 1.0;
-        var residual = 1.0;
-        var f = SystemCalculator.CalcF(system, point);
-        var normF0 = Calculator.CalcNorm(f);
-        var startPoint = new double[point.Length];
-        Array.Copy(point, startPoint, point.Length);
-        points.Add(startPoint);
-        norms.Add(normF0);
+        var point = Preparation(system, startPoint, out var beta, out var residual, out var normF0);
+
+        yield return (point, normF0, beta);
+
         for (var i = 1; i < maxIter && residual > eps2; i++)
         {
-            f = SystemCalculator.CalcF(system, point);
+            var f = SystemCalculator.CalcF(system, point);
             var normFPrev = Calculator.CalcNorm(f);
 
             matrix.CalcJacobianAnalytically(system, point);
@@ -32,7 +24,7 @@ public class TransposeAnalytically : IMethod
             var minusATF = Calculator.InvertSignOfVector(Calculator.MultiplyTransposedOnVector(matrixA, f));
 
             matrix.A = Calculator.MultiplyTransposedOnOriginal(matrixA);
-            
+
             matrix.LDUDecomposition();
 
             var deltaX = SLAESolver.SolveSLAE(matrix.A, minusATF);
@@ -41,6 +33,8 @@ public class TransposeAnalytically : IMethod
 
             var fNext = SystemCalculator.CalcF(system, nextPoint);
             var normF = Calculator.CalcNorm(fNext);
+
+            beta = 1.0;
 
             while (normF > normFPrev && beta > eps1)
             {
@@ -54,13 +48,9 @@ public class TransposeAnalytically : IMethod
 
             point = nextPoint;
 
-            //CourseHolder.GetInfo(i, beta, point, normF);
-
             residual = normF / normF0;
 
-            points.Add(point);
-            norms.Add(normF);
-            betas.Add(beta);
+            yield return (point, normF, beta);
         }
     }
 }

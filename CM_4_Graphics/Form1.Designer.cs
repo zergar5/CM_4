@@ -67,11 +67,13 @@
             this.YLabel = new System.Windows.Forms.Label();
             this.PointButton = new System.Windows.Forms.Button();
             this.IterationInfoLabel = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.IterationInfoBox = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.SinusoidBox.SuspendLayout();
             this.LineBox.SuspendLayout();
             this.CircleBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // FunctionsBox
@@ -130,7 +132,6 @@
             this.NegativeShiftBox.Name = "NegativeShiftBox";
             this.NegativeShiftBox.Size = new System.Drawing.Size(100, 23);
             this.NegativeShiftBox.TabIndex = 8;
-            this.NegativeShiftBox.TextChanged += new System.EventHandler(this.NegativeShift_TextChanged);
             // 
             // FrequencyBox
             // 
@@ -138,7 +139,6 @@
             this.FrequencyBox.Name = "FrequencyBox";
             this.FrequencyBox.Size = new System.Drawing.Size(100, 23);
             this.FrequencyBox.TabIndex = 7;
-            this.FrequencyBox.TextChanged += new System.EventHandler(this.Frequency_TextChanged);
             // 
             // AmplitudeBox
             // 
@@ -146,7 +146,6 @@
             this.AmplitudeBox.Name = "AmplitudeBox";
             this.AmplitudeBox.Size = new System.Drawing.Size(100, 23);
             this.AmplitudeBox.TabIndex = 6;
-            this.AmplitudeBox.TextChanged += new System.EventHandler(this.Amplitude_TextChanged);
             // 
             // ShiftBox
             // 
@@ -154,7 +153,6 @@
             this.ShiftBox.Name = "ShiftBox";
             this.ShiftBox.Size = new System.Drawing.Size(100, 23);
             this.ShiftBox.TabIndex = 5;
-            this.ShiftBox.TextChanged += new System.EventHandler(this.Shift_TextChanged);
             // 
             // label7
             // 
@@ -220,7 +218,6 @@
             this.CTextBox.Name = "CTextBox";
             this.CTextBox.Size = new System.Drawing.Size(100, 23);
             this.CTextBox.TabIndex = 15;
-            this.CTextBox.TextChanged += new System.EventHandler(this.CTextBox_TextChanged);
             // 
             // BTextBox
             // 
@@ -228,7 +225,6 @@
             this.BTextBox.Name = "BTextBox";
             this.BTextBox.Size = new System.Drawing.Size(100, 23);
             this.BTextBox.TabIndex = 14;
-            this.BTextBox.TextChanged += new System.EventHandler(this.BTextBox_TextChanged);
             // 
             // ATextBox
             // 
@@ -236,7 +232,6 @@
             this.ATextBox.Name = "ATextBox";
             this.ATextBox.Size = new System.Drawing.Size(100, 23);
             this.ATextBox.TabIndex = 8;
-            this.ATextBox.TextChanged += new System.EventHandler(this.ATextBox_TextChanged);
             // 
             // ALabel
             // 
@@ -293,7 +288,6 @@
             this.RadiusBox.Name = "RadiusBox";
             this.RadiusBox.Size = new System.Drawing.Size(100, 23);
             this.RadiusBox.TabIndex = 8;
-            this.RadiusBox.TextChanged += new System.EventHandler(this.RadiusBox_TextChanged);
             // 
             // CenterYBox
             // 
@@ -301,7 +295,6 @@
             this.CenterYBox.Name = "CenterYBox";
             this.CenterYBox.Size = new System.Drawing.Size(100, 23);
             this.CenterYBox.TabIndex = 7;
-            this.CenterYBox.TextChanged += new System.EventHandler(this.CenterYBox_TextChanged);
             // 
             // CenterXBox
             // 
@@ -309,7 +302,6 @@
             this.CenterXBox.Name = "CenterXBox";
             this.CenterXBox.Size = new System.Drawing.Size(100, 23);
             this.CenterXBox.TabIndex = 6;
-            this.CenterXBox.TextChanged += new System.EventHandler(this.CenterXBox_TextChanged);
             // 
             // CenterX
             // 
@@ -343,9 +335,9 @@
             // 
             // GraphicBox
             // 
-            this.GraphicBox.Location = new System.Drawing.Point(168, 174);
+            this.GraphicBox.Location = new System.Drawing.Point(289, 174);
             this.GraphicBox.Name = "GraphicBox";
-            this.GraphicBox.Size = new System.Drawing.Size(1081, 435);
+            this.GraphicBox.Size = new System.Drawing.Size(960, 434);
             this.GraphicBox.TabIndex = 11;
             this.GraphicBox.TabStop = false;
             // 
@@ -374,7 +366,7 @@
             this.SolveButton.Location = new System.Drawing.Point(13, 174);
             this.SolveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SolveButton.Name = "SolveButton";
-            this.SolveButton.Size = new System.Drawing.Size(147, 45);
+            this.SolveButton.Size = new System.Drawing.Size(121, 45);
             this.SolveButton.TabIndex = 6;
             this.SolveButton.Text = "Решить задачу";
             this.SolveButton.UseVisualStyleBackColor = true;
@@ -460,6 +452,7 @@
             this.PointButton.TabIndex = 19;
             this.PointButton.Text = "Input Point";
             this.PointButton.UseVisualStyleBackColor = true;
+            this.PointButton.Click += new System.EventHandler(this.PointButton_Click);
             // 
             // IterationInfoLabel
             // 
@@ -471,23 +464,32 @@
             this.IterationInfoLabel.TabIndex = 21;
             this.IterationInfoLabel.Text = "Iteration Info";
             // 
-            // textBox1
+            // IterationInfoBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(934, 30);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(315, 126);
-            this.textBox1.TabIndex = 20;
+            this.IterationInfoBox.Location = new System.Drawing.Point(934, 30);
+            this.IterationInfoBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.IterationInfoBox.Multiline = true;
+            this.IterationInfoBox.Name = "IterationInfoBox";
+            this.IterationInfoBox.ReadOnly = true;
+            this.IterationInfoBox.Size = new System.Drawing.Size(315, 126);
+            this.IterationInfoBox.TabIndex = 20;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(140, 174);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(140, 434);
+            this.pictureBox1.TabIndex = 22;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1266, 621);
+            this.ClientSize = new System.Drawing.Size(1268, 621);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.IterationInfoLabel);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.IterationInfoBox);
             this.Controls.Add(this.PointButton);
             this.Controls.Add(this.YLabel);
             this.Controls.Add(this.XLabel);
@@ -507,9 +509,10 @@
             this.Controls.Add(this.MethodsBox);
             this.Controls.Add(this.FunctionsBox);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SNU";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SinusoidBox.ResumeLayout(false);
             this.SinusoidBox.PerformLayout();
@@ -518,6 +521,7 @@
             this.CircleBox.ResumeLayout(false);
             this.CircleBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -564,6 +568,7 @@
         private Label YLabel;
         private Button PointButton;
         private Label IterationInfoLabel;
-        private TextBox textBox1;
+        private TextBox IterationInfoBox;
+        private PictureBox pictureBox1;
     }
 }
