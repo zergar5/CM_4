@@ -64,7 +64,7 @@ public class GradationDrawer
             {
                 var point = new[] { -(xSize - 1) + j / 100.0, (ySize - 1) - i / 100.0 };
                 var f = SystemCalculator.CalcF(system, point);
-                var normF = Calculator.CalcNorm(f);
+                var normF = Math.Log10(Calculator.CalcNorm(f));
                 var centralPoint = new PointF((float)(center.X - (xSize - 1) * scale + j / 100.0 * scale), (float)(center.Y - (ySize - 1) * scale + i / 100.0 * scale));
 
                 if (!(normF < min)) continue;
@@ -108,7 +108,7 @@ public class GradationDrawer
             {
                 var point = new[] { -(xSize - 1) + j / 100.0, (ySize - 1) - i / 100.0 };
                 var f = SystemCalculator.CalcF(system, point);
-                var normF = Calculator.CalcNorm(f);
+                var normF = Math.Log10(Calculator.CalcNorm(f));
                 var centralPoint = new PointF((float)(center.X - (xSize - 1) * scale + j / 100.0 * scale),
                     (float)(center.Y - (ySize - 1) * scale + i / 100.0 * scale));
                 if (ranges[0] < normF && normF <= ranges[1] + delta)

@@ -25,8 +25,8 @@ public class SystemDrawer
         else
         {
             graphics.DrawLine(pen,
-                new PointF((float)(center.X - (xSize - 1) * scale), (float)(center.Y - ((xSize - 1) * line.A - line.C) / line.B * scale)),
-                new PointF((float)(center.X + (xSize - 1) * scale), (float)(center.Y + ((xSize - 1) * line.A + line.C) / line.B * scale)));
+                new PointF(center.X - (xSize - 1) * scale, (float)(center.Y - ((xSize - 1) * line.A - line.C) / line.B * scale)),
+                new PointF(center.X + (xSize - 1) * scale, (float)(center.Y + ((xSize - 1) * line.A + line.C) / line.B * scale)));
         }
 
         CreateFunctionView(pen.Color, out var fLabel, out var fColor);

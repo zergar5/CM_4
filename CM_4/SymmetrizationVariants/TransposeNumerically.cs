@@ -13,7 +13,7 @@ public class TransposeNumerically : Method
 
         yield return (point, normF0, beta);
 
-        for (var i = 1; i < maxIter && residual > eps2; i++)
+        for (var i = 1; i < maxIter && beta > eps1 && residual > eps2; i++)
         {
             var f = SystemCalculator.CalcF(system, point);
             var normFPrev = Calculator.CalcNorm(f);
