@@ -11,14 +11,14 @@ using Matrix = CM_4.Models.Matrix;
 
 namespace CM_4_Graphics;
 
-public partial class Form1 : Form
+public partial class SNUForm : Form
 {
     private SystemProvider _systemProvider;
     private Method? _method;
     private double[] _point;
     private const double Eps = 10.0e-16;
 
-    public Form1()
+    public SNUForm()
     {
         InitializeComponent();
     }
@@ -44,24 +44,46 @@ public partial class Form1 : Form
 
         var center = new Point(GraphicBox.Width / 2, GraphicBox.Height / 2);
 
-        GradationDrawer.DrawGradation(graphics, system, center, xSize, ySize, scale);
+        var gradationLegend = GradationLegendBox.CreateGraphics();
+        gradationLegend.Clear(Color.White);
+
+        GradationDrawer.DrawGradation(graphics, system, center, xSize, ySize, scale, gradationLegend, GradationLegendBox.Width, GradationLegendBox.Height, font);
 
         CoordinateSystemDrawer.DrawCoordinateSystem(graphics, center, font, scale, xSize, ySize);
+
+        SystemDrawer.X0 = SolveButton.Location.X + SolveButton.Width - 40;
+        SystemDrawer.Y0 = SolveButton.Location.Y + SolveButton.Height + 10;
+        SystemDrawer.FunctionNumber = 1;
+        SystemDrawer.Font = font;
+
+        if (Controls.Count > 21)
+        {
+            for (var i = 0; i < system.Count * 2; i++)
+            {
+                Controls.RemoveAt(Controls.Count - 1);
+            }
+        }
 
         foreach (var function in system)
         {
             switch (function)
             {
                 case Line line:
-                    SystemDrawer.DrawLine(graphics, line, center, scale, Eps);
+                    var (functionLabel, functionColor) = (SystemDrawer.DrawLine(graphics, line, center, scale, Eps));
+                    Controls.Add(functionLabel);
+                    Controls.Add(functionColor);
                     break;
 
-                case Circle circle:
-                    SystemDrawer.DrawCircle(graphics, circle, center, scale);
+                case Circle circle: 
+                    (functionLabel, functionColor) = (SystemDrawer.DrawCircle(graphics, circle, center, scale));
+                    Controls.Add(functionLabel);
+                    Controls.Add(functionColor);
                     break;
 
                 case Sinusoid sinusoid:
-                    SystemDrawer.DrawSinusoid(graphics, sinusoid, center, scale);
+                    (functionLabel, functionColor) = (SystemDrawer.DrawSinusoid(graphics, sinusoid, center, scale));
+                    Controls.Add(functionLabel);
+                    Controls.Add(functionColor);
                     break;
             }
         }

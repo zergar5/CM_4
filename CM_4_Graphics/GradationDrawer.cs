@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using CM_4.Models.Functions;
 using CM_4.SymmetrizationVariants;
 using CM_4.Tools.Calculators;
@@ -7,11 +8,13 @@ namespace CM_4_Graphics;
 
 public class GradationDrawer
 {
-    public static void DrawGradation(Graphics graphics, List<Function> system, Point center, int xSize, int ySize, int scale)
+    public static void DrawGradation(Graphics graphics, List<Function> system, Point center, int xSize, int ySize, int scale, Graphics gradationLegend, int legendWidth,int legendHeight, Font font)
     {
         CalcMin(system, center, xSize, ySize, scale, out var min, out var minPoint);
 
-        var colorBlend = CreateColorBlend(system, center, min, xSize, ySize, scale, out var centralPoints, out var contour);
+        var colorBlend = CreateColorBlend(system, center, min, xSize, ySize, scale, out var centralPoints, out var contour, out var ranges);
+
+        DrawLegend(gradationLegend, legendWidth, legendHeight, colorBlend, font, ranges);
 
         var graphicsPath = new GraphicsPath();
 
@@ -74,13 +77,24 @@ public class GradationDrawer
     }
 
     private static ColorBlend CreateColorBlend(List<Function> system, PointF center, double min, int xSize, int ySize,
-        int scale, out List<PointF> centralPoints, out List<(PointF, PointF)> contour)
+        int scale, out List<PointF> centralPoints, out List<(PointF, PointF)> contour, out List<double> ranges)
 
     {
         centralPoints = new List<PointF>();
         contour = new List<(PointF, PointF)>();
 
-        const double delta = 1.0e-7;
+        const double delta = 1.0e-6;
+
+        ranges = new List<double>
+        {
+            1.0e-9,
+            1.0e-3,
+            1.0e-2,
+            1.0e-1,
+            1.0e0,
+            1.0e1,
+            1.0e2,
+        };
 
         var secondRange = 0;
         var thirdRange = 0;
@@ -99,7 +113,7 @@ public class GradationDrawer
                 var normF = Calculator.CalcNorm(f);
                 var centralPoint = new PointF((float)(center.X - (xSize - 1) * scale + j / 100.0 * scale),
                     (float)(center.Y - (ySize - 1) * scale + i / 100.0 * scale));
-                if (10.0e-20 < normF && normF <= min + delta)
+                if (ranges[0] < normF && normF <= ranges[1] + delta)
                 {
                     centralPoints.Add(centralPoint);
                     if (rightPoint.X < centralPoint.X)
@@ -112,23 +126,23 @@ public class GradationDrawer
                         leftPoint = centralPoint;
                     }
                 }
-                else if (min + delta < normF && normF <= min + 1.0e-2 + delta)
+                else if (ranges[1] + delta < normF && normF <= ranges[2] + delta)
                 {
                     secondRange++;
                 }
-                else if (min + 1.0e-2 + delta < normF && normF <= min + 1.0e-1 + delta)
+                else if (ranges[2] + delta < normF && normF <= ranges[3] + delta )
                 {
                     thirdRange++;
                 }
-                else if (min + 1.0e0 + delta < normF && normF <= min + 1.0e1 + delta)
+                else if (ranges[3] + delta < normF && normF <= ranges[4] + delta)
                 {
                     fourthRange++;
                 }
-                else if (min + 1.0e1 + delta < normF && normF <= min + 1.0e2 + delta)
+                else if (ranges[4] + delta < normF && normF <= ranges[5] + delta)
                 {
                     fifthRange++;
                 }
-                else if (min + 1.0e2 + delta < normF && normF <= min + 1.0e3 + delta)
+                else if (ranges[5] + delta < normF && normF <= ranges[6] + delta)
                 {
                     sixthRange++;
                 }
@@ -191,5 +205,41 @@ public class GradationDrawer
             .Concat(contour.TakeLast(1).Select(y => y.Item2 with { Y = y.Item2.Y + center.Y * 3 }));
         return leftSidePoints.Reverse().Concat(highPoints).Concat(rightSidePoints).Concat(lowPoints)
             .ToArray();
+    }
+
+    private static void DrawLegend(Graphics gradationLegend, int legendWidth, int legendHeight, ColorBlend colorBlend, Font font, List<double> ranges)
+    {
+        var canvas = new RectangleF(legendWidth/2, 14, legendWidth/2, legendHeight - 28);
+        var legendBlend = new ColorBlend
+        {
+            Colors = colorBlend.Colors,
+            Positions = new[]
+            {
+                0.0f,
+                1/6f,
+                2/6f,
+                3/6f,
+                4/6f,
+                5/6f,
+                1.0f
+            }
+        };
+        var linearGradientBrush = new LinearGradientBrush(canvas, legendBlend.Colors[0], legendBlend.Colors[^1], LinearGradientMode.Vertical);
+        linearGradientBrush.InterpolationColors = legendBlend;
+        gradationLegend.FillRectangle(linearGradientBrush, canvas);
+
+        const int offset = 58;
+
+        var pen = new Pen(Color.Black, 1f);
+
+        for (var i = 0; i < 7; i++)
+        {
+            gradationLegend.DrawString($"{ranges[i]}", font, Brushes.Black,
+                new PointF(0, i * offset));
+            gradationLegend.DrawLine(pen, legendWidth / 2, i * offset + 14, legendWidth, i * offset + 14);
+        }
+        gradationLegend.DrawString($"{ranges[^1]}+", font, Brushes.Black,
+            new PointF(0, legendHeight - 28));
+        gradationLegend.DrawLine(pen, legendWidth / 2, legendHeight - 14, legendWidth, legendHeight - 14);
     }
 }

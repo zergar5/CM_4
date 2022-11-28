@@ -1,6 +1,6 @@
 ﻿namespace CM_4_Graphics
 {
-    partial class Form1
+    partial class SNUForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -68,12 +68,12 @@
             this.PointButton = new System.Windows.Forms.Button();
             this.IterationInfoLabel = new System.Windows.Forms.Label();
             this.IterationInfoBox = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.GradationLegendBox = new System.Windows.Forms.PictureBox();
             this.SinusoidBox.SuspendLayout();
             this.LineBox.SuspendLayout();
             this.CircleBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GradationLegendBox)).BeginInit();
             this.SuspendLayout();
             // 
             // FunctionsBox
@@ -474,20 +474,20 @@
             this.IterationInfoBox.Size = new System.Drawing.Size(315, 126);
             this.IterationInfoBox.TabIndex = 20;
             // 
-            // pictureBox1
+            // GradationLegendBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(140, 174);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(140, 434);
-            this.pictureBox1.TabIndex = 22;
-            this.pictureBox1.TabStop = false;
+            this.GradationLegendBox.Location = new System.Drawing.Point(140, 174);
+            this.GradationLegendBox.Name = "GradationLegendBox";
+            this.GradationLegendBox.Size = new System.Drawing.Size(140, 434);
+            this.GradationLegendBox.TabIndex = 22;
+            this.GradationLegendBox.TabStop = false;
             // 
-            // Form1
+            // SNUForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1268, 621);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.GradationLegendBox);
             this.Controls.Add(this.IterationInfoLabel);
             this.Controls.Add(this.IterationInfoBox);
             this.Controls.Add(this.PointButton);
@@ -511,7 +511,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "Form1";
+            this.Name = "SNUForm";
             this.Text = "SNU";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SinusoidBox.ResumeLayout(false);
@@ -521,7 +521,7 @@
             this.CircleBox.ResumeLayout(false);
             this.CircleBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GradationLegendBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -569,6 +569,6 @@
         private Button PointButton;
         private Label IterationInfoLabel;
         private TextBox IterationInfoBox;
-        private PictureBox pictureBox1;
+        private PictureBox GradationLegendBox;
     }
 }
