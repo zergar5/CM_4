@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace CM_4_Graphics;
+﻿namespace CM_4_Graphics;
 
 public class CoordinateSystemDrawer
 {

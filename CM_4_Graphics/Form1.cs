@@ -1,12 +1,7 @@
-using System.CodeDom;
-using System.Drawing.Drawing2D;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
-using System.Text;
 using CM_4.IO;
-using CM_4.Models;
 using CM_4.Models.Functions;
 using CM_4.SymmetrizationVariants;
+using System.Drawing;
 using Matrix = CM_4.Models.Matrix;
 
 namespace CM_4_Graphics;
@@ -40,9 +35,9 @@ public partial class SNUForm : Form
         const int xSize = 17;
         const int ySize = 8;
 
-        var font = new Font("TimesNewRoman", 9, FontStyle.Regular);
-
         var center = new Point(GraphicBox.Width / 2, GraphicBox.Height / 2);
+
+        var font = new Font("TimesNewRoman", 9, FontStyle.Regular);
 
         var gradationLegend = GradationLegendBox.CreateGraphics();
         gradationLegend.Clear(Color.White);
@@ -50,11 +45,6 @@ public partial class SNUForm : Form
         GradationDrawer.DrawGradation(graphics, system, center, xSize, ySize, scale, gradationLegend, GradationLegendBox.Width, GradationLegendBox.Height, font);
 
         CoordinateSystemDrawer.DrawCoordinateSystem(graphics, center, font, scale, xSize, ySize);
-
-        SystemDrawer.X0 = SolveButton.Location.X + SolveButton.Width - 40;
-        SystemDrawer.Y0 = SolveButton.Location.Y + SolveButton.Height + 10;
-        SystemDrawer.FunctionNumber = 1;
-        SystemDrawer.Font = font;
 
         if (Controls.Count > 21)
         {
@@ -64,17 +54,43 @@ public partial class SNUForm : Form
             }
         }
 
+        SystemDrawer.X0 = SolveButton.Location.X + SolveButton.Width - 70;
+        SystemDrawer.Y0 = SolveButton.Location.Y + SolveButton.Height + 10;
+        SystemDrawer.FunctionNumber = 1;
+        SystemDrawer.Font = font;
+
+        var pen = new Pen(Color.FromArgb(255, 3, 4), 3f);
+
+        var intersectionLabel = new Label
+        {
+            Location = new Point(SystemDrawer.X0, SystemDrawer.Y0),
+            Size = new Size(70, 20),
+            Text = "Intersection",
+            Font = Font
+        };
+        SystemDrawer.Y0 += 20;
+        var intersectionColor = new PictureBox
+        {
+            Location = new Point(SystemDrawer.X0, SystemDrawer.Y0),
+            Size = new Size(70, 5),
+            BackColor = pen.Color
+        };
+        SystemDrawer.Y0 += 5;
+
+        Controls.Add(intersectionLabel);
+        Controls.Add(intersectionColor);
+
         foreach (var function in system)
         {
             switch (function)
             {
                 case Line line:
-                    var (functionLabel, functionColor) = (SystemDrawer.DrawLine(graphics, line, center, scale, Eps));
+                    var (functionLabel, functionColor) = (SystemDrawer.DrawLine(graphics, line, center, scale, Eps, xSize, ySize));
                     Controls.Add(functionLabel);
                     Controls.Add(functionColor);
                     break;
 
-                case Circle circle: 
+                case Circle circle:
                     (functionLabel, functionColor) = (SystemDrawer.DrawCircle(graphics, circle, center, scale));
                     Controls.Add(functionLabel);
                     Controls.Add(functionColor);
@@ -90,8 +106,6 @@ public partial class SNUForm : Form
 
         if (_point == null) return;
         {
-            var pen = new Pen(Color.FromArgb(255, 40, 40), 3f);
-
             var pointO = new PointIO("../CM_4/Output/");
             var parameterI = new ParametersIO("../CM_4/Input/");
 

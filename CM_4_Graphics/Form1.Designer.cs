@@ -347,9 +347,9 @@
             this.FunctionLabel.Location = new System.Drawing.Point(14, 17);
             this.FunctionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.FunctionLabel.Name = "FunctionLabel";
-            this.FunctionLabel.Size = new System.Drawing.Size(116, 15);
+            this.FunctionLabel.Size = new System.Drawing.Size(97, 15);
             this.FunctionLabel.TabIndex = 4;
-            this.FunctionLabel.Text = "Выберите функцию";
+            this.FunctionLabel.Text = "Choose Function";
             // 
             // MethodLabel
             // 
@@ -357,9 +357,9 @@
             this.MethodLabel.Location = new System.Drawing.Point(14, 59);
             this.MethodLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.MethodLabel.Name = "MethodLabel";
-            this.MethodLabel.Size = new System.Drawing.Size(97, 15);
+            this.MethodLabel.Size = new System.Drawing.Size(92, 15);
             this.MethodLabel.TabIndex = 5;
-            this.MethodLabel.Text = "Выберите метод";
+            this.MethodLabel.Text = "Choose Method";
             // 
             // SolveButton
             // 
@@ -368,7 +368,7 @@
             this.SolveButton.Name = "SolveButton";
             this.SolveButton.Size = new System.Drawing.Size(121, 45);
             this.SolveButton.TabIndex = 6;
-            this.SolveButton.Text = "Решить задачу";
+            this.SolveButton.Text = "Solve";
             this.SolveButton.UseVisualStyleBackColor = true;
             this.SolveButton.Click += new System.EventHandler(this.SolveButton_Click);
             // 
@@ -398,7 +398,7 @@
             this.AddFunctionButton.Name = "AddFunctionButton";
             this.AddFunctionButton.Size = new System.Drawing.Size(101, 50);
             this.AddFunctionButton.TabIndex = 12;
-            this.AddFunctionButton.Text = "AddFunction";
+            this.AddFunctionButton.Text = "Add Function";
             this.AddFunctionButton.UseVisualStyleBackColor = true;
             this.AddFunctionButton.Click += new System.EventHandler(this.AddFunctionButton_Click);
             // 
@@ -408,7 +408,7 @@
             this.DeleteFunctionButton.Name = "DeleteFunctionButton";
             this.DeleteFunctionButton.Size = new System.Drawing.Size(101, 52);
             this.DeleteFunctionButton.TabIndex = 13;
-            this.DeleteFunctionButton.Text = "DeleteFunction";
+            this.DeleteFunctionButton.Text = "Delete Function";
             this.DeleteFunctionButton.UseVisualStyleBackColor = true;
             this.DeleteFunctionButton.Click += new System.EventHandler(this.DeleteFunctionButton_Click);
             // 
@@ -450,7 +450,7 @@
             this.PointButton.Name = "PointButton";
             this.PointButton.Size = new System.Drawing.Size(140, 47);
             this.PointButton.TabIndex = 19;
-            this.PointButton.Text = "Input Point";
+            this.PointButton.Text = "Input Start Point";
             this.PointButton.UseVisualStyleBackColor = true;
             this.PointButton.Click += new System.EventHandler(this.PointButton_Click);
             // 

@@ -1,5 +1,4 @@
 using CM_4.Tools.Calculators;
-using NUnit.Framework.Constraints;
 
 namespace CM_4_Tests
 {
@@ -39,7 +38,7 @@ namespace CM_4_Tests
             CollectionAssert.AreEqual(expected, actual);
         }
 
-        [TestCase(new[] { -1.0, -2.0, -3.0})]
+        [TestCase(new[] { -1.0, -2.0, -3.0 })]
         public void InvertSignOfVectorTest(double[] actual)
         {
             var expected = Calculator.InvertSignOfVector(_f);

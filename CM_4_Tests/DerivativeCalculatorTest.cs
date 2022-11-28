@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using CM_4.Models.Functions;
+﻿using CM_4.Models.Functions;
 using CM_4.Tools.Calculators;
 
 namespace CM_4_Tests;

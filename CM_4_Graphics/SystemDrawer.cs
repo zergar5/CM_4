@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using CM_4.Models.Functions;
-using System.Drawing;
+﻿using CM_4.Models.Functions;
 
 namespace CM_4_Graphics;
 
@@ -10,7 +8,7 @@ public class SystemDrawer
     public static int Y0;
     public static int FunctionNumber;
     public static Font Font;
-    public static (Label, PictureBox) DrawLine(Graphics graphics, Line line, Point center, int scale, double eps)
+    public static (Label, PictureBox) DrawLine(Graphics graphics, Line line, Point center, int scale, double eps, int xSize, int ySize)
     {
         var pen = new Pen(Color.FromArgb(166, 79, 255), 3f);
         if (Math.Abs(line.B) < eps)
@@ -27,9 +25,8 @@ public class SystemDrawer
         else
         {
             graphics.DrawLine(pen,
-                new PointF((float)(-line.C * scale / line.B), (float)(center.Y + center.X * -line.A / line.B)),
-                new PointF((float)(center.X * 2 - line.C * scale / line.B),
-                    (float)(center.Y - center.X * -line.A / line.B)));
+                new PointF((float)(center.X - (xSize - 1) * scale), (float)(center.Y - ((xSize - 1) * line.A - line.C) / line.B * scale)),
+                new PointF((float)(center.X + (xSize - 1) * scale), (float)(center.Y + ((xSize - 1) * line.A + line.C) / line.B * scale)));
         }
 
         CreateFunctionView(pen.Color, out var fLabel, out var fColor);

@@ -1,6 +1,5 @@
 ﻿using CM_4.Models;
 using CM_4.Models.Functions;
-using CM_4.Tools.Calculators;
 
 namespace CM_4_Tests;
 
@@ -59,7 +58,7 @@ public class MatrixTest
     [Test]
     public void AnalyticalJacobianLinesTest()
     {
-        
+
         _matrix.CalcJacobianAnalytically(_linesSystem, _point);
         var actual = new[,]
         {
@@ -99,7 +98,7 @@ public class MatrixTest
     [Test]
     public void NumericalJacobianLinesTest()
     {
-        
+
         _matrix.CalcJacobianNumerically(_linesSystem, _point);
         var actual = new[,]
         {

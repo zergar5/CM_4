@@ -1,5 +1,4 @@
 ﻿using CM_4.Models.Functions;
-using CM_4.Models;
 using CM_4.Tools.Calculators;
 
 namespace CM_4_Tests;
@@ -14,7 +13,7 @@ public class SystemCalculatorTest
         _point = new[] { 1.0, 1.0 };
     }
 
-    [TestCase(new[] { -9.0, -2.0, 0.5})]
+    [TestCase(new[] { -9.0, -2.0, 0.5 })]
     public void CalcFLinesTest(double[] actual)
     {
         var linesSystem = new List<Function>

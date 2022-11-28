@@ -18,6 +18,6 @@ public class SystemProvider
 
     public void DeleteFunction()
     {
-        if(Functions.Count != 0) Functions.RemoveAt(0);
+        if (Functions.Count != 0) Functions.RemoveAt(0);
     }
 }

@@ -1,14 +1,12 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using CM_4.Models.Functions;
-using CM_4.SymmetrizationVariants;
+﻿using CM_4.Models.Functions;
 using CM_4.Tools.Calculators;
+using System.Drawing.Drawing2D;
 
 namespace CM_4_Graphics;
 
 public class GradationDrawer
 {
-    public static void DrawGradation(Graphics graphics, List<Function> system, Point center, int xSize, int ySize, int scale, Graphics gradationLegend, int legendWidth,int legendHeight, Font font)
+    public static void DrawGradation(Graphics graphics, List<Function> system, Point center, int xSize, int ySize, int scale, Graphics gradationLegend, int legendWidth, int legendHeight, Font font)
     {
         CalcMin(system, center, xSize, ySize, scale, out var min, out var minPoint);
 
@@ -130,7 +128,7 @@ public class GradationDrawer
                 {
                     secondRange++;
                 }
-                else if (ranges[2] + delta < normF && normF <= ranges[3] + delta )
+                else if (ranges[2] + delta < normF && normF <= ranges[3] + delta)
                 {
                     thirdRange++;
                 }
@@ -234,11 +232,11 @@ public class GradationDrawer
 
         for (var i = 0; i < 7; i++)
         {
-            gradationLegend.DrawString($"{ranges[i]}", font, Brushes.Black,
+            gradationLegend.DrawString($"{ranges[i]:0.000e+000}", font, Brushes.Black,
                 new PointF(0, i * offset));
             gradationLegend.DrawLine(pen, legendWidth / 2, i * offset + 14, legendWidth, i * offset + 14);
         }
-        gradationLegend.DrawString($"{ranges[^1]}+", font, Brushes.Black,
+        gradationLegend.DrawString($"{double.MaxValue:0.000e+000}", font, Brushes.Black,
             new PointF(0, legendHeight - 28));
         gradationLegend.DrawLine(pen, legendWidth / 2, legendHeight - 14, legendWidth, legendHeight - 14);
     }

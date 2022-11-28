@@ -1,6 +1,4 @@
-﻿using CM_4.SymmetrizationVariants;
-using System.Drawing;
-using System.Text;
+﻿using System.Text;
 
 namespace CM_4_Graphics;
 

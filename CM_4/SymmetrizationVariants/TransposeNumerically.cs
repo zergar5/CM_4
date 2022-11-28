@@ -1,7 +1,7 @@
-﻿using CM_4.Models.Functions;
-using CM_4.Models;
-using CM_4.Tools.Calculators;
+﻿using CM_4.Models;
+using CM_4.Models.Functions;
 using CM_4.Tools;
+using CM_4.Tools.Calculators;
 
 namespace CM_4.SymmetrizationVariants;
 
