@@ -17,18 +17,18 @@ public class Sinusoid : Function, IEquatable<Sinusoid>
 
     public Sinusoid(double shift, double amplitude, double frequency, double negativeShift)
     {
-        this.Shift=shift;
-        this.Amplitude=amplitude;
-        this.Frequency=frequency;
-        this.NegativeShift=negativeShift;
+        Shift=shift;
+        Amplitude=amplitude;
+        Frequency=frequency;
+        NegativeShift=negativeShift;
     }
 
     public void SetParameters(double shift, double amplitude, double frequency, double negativeShift)
     {
-        this.Shift=shift;
-        this.Amplitude=amplitude;
-        this.Frequency=frequency;
-        this.NegativeShift=negativeShift;
+        Shift=shift;
+        Amplitude=amplitude;
+        Frequency=frequency;
+        NegativeShift=negativeShift;
     }
 
     public override double CalcFunction(double[] point)

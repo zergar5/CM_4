@@ -15,18 +15,18 @@ public class Line : Function, IEquatable<Line>
 
     public Line(double a, double b, double c)
     {
-        this.A = a;
-        this.B = b;
-        this.C = c;
+        A = a;
+        B = b;
+        C = c;
     }
 
     public void SetCoefficients(double a, double b)
     {
-        this.A = a;
-        this.B = b;
+        A = a;
+        B = b;
     }
 
-    public void SetC(double c) => this.C = c;
+    public void SetC(double c) => C = c;
 
     public override double CalcFunction(double[] point)
     {

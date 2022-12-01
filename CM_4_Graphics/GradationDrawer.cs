@@ -1,6 +1,5 @@
 ﻿using CM_4.Models.Functions;
 using CM_4.Tools.Calculators;
-using System;
 using System.Drawing.Drawing2D;
 
 namespace CM_4_Graphics;
@@ -9,11 +8,11 @@ public class GradationDrawer
 {
     public static void DrawGradation(Graphics graphics, List<Function> system, Point center, int xSize, int ySize, int scale, Graphics gradationLegend, int legendWidth, int legendHeight, Font font)
     {
-        const double delta = 1.0e-6;
+        const double delta = 1.0e-1;
 
         var ranges = new List<double>
         {
-            1.0e-9,
+            -1.0e1,
             1.0e-3,
             1.0e-2,
             1.0e-1,

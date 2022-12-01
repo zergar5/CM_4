@@ -1,7 +1,6 @@
 using CM_4.IO;
 using CM_4.Models.Functions;
 using CM_4.SymmetrizationVariants;
-using System.Drawing;
 using Matrix = CM_4.Models.Matrix;
 
 namespace CM_4_Graphics;

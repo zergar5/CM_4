@@ -15,9 +15,9 @@ public class Circle : Function, IEquatable<Circle>
 
     public Circle(double centerX, double centerY, double radius)
     {
-        this.CenterX = centerX;
-        this.CenterY = centerY;
-        this.Radius = radius;
+        CenterX = centerX;
+        CenterY = centerY;
+        Radius = radius;
     }
 
     public void SetCenter(double x, double y)
@@ -26,7 +26,7 @@ public class Circle : Function, IEquatable<Circle>
         CenterY = y;
     }
 
-    public void SetRadius(double radius) => this.Radius = radius;
+    public void SetRadius(double radius) => Radius = radius;
 
     public override double CalcFunction(double[] point)
     {
